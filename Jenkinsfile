@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
 
-                sh 'mvn clean package'  // Builds the Spring Boot application
+                bat 'mvn clean package'  // Builds the Spring Boot application
 
                 // git 'http://github.com/USER/REPO.git'
                 // Run Maven Wrapper Commands
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'mvn test'  // Runs unit tests
+                bat 'mvn test'  // Runs unit tests
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                sh 'java -jar target/*.jar'  // Executes the generated JAR file
+                bat 'java -jar target/*.jar'  // Executes the generated JAR file
             }
         }
     }
