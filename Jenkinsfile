@@ -1,41 +1,43 @@
 pipeline {
     agent any
-
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/Anushma/pet-clinic.git'  // Replace with your Git repository
+                // Clone the repository
+                git 'https://github.com/Anushma/pet-clinic.git'
             }
         }
-
         stage('Build') {
             steps {
-
-                bat 'mvn clean package'  // Builds the Spring Boot application
-
-                // git 'http://github.com/USER/REPO.git'
-                // Run Maven Wrapper Commands
-                echo 'Building the Project with maven compile'
-
+                // Build the Spring Boot application using Maven
+                bat 'mvn clean package'
             }
         }
-
+        stage('Check Files') {
+            steps {
+                // Verify the presence of application.properties
+                bat 'dir src\\main\\resources\\application.properties'
+            }
+        }
         stage('Test') {
             steps {
-                bat 'mvn test'  // Runs unit tests
+                // Run tests
+                bat 'mvn test'
             }
         }
-
-        stage('Archive Artifact') {
+        stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                // Archive the built artifacts
+                archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
             }
         }
-
-        stage('Run Application') {
-            steps {
-               bat 'java -jar target/pet-clinic-1.0.0.jar' // Executes the generated JAR file
-            }
+    }
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed.'
         }
     }
 }
