@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                bat 'java -jar target/*.jar'  // Executes the generated JAR file
+               bat 'java -jar target/pet-clinic-1.0.0.jar''  // Executes the generated JAR file
             }
         }
     }
