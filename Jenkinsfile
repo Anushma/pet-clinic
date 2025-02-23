@@ -2,39 +2,33 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/Anushma/pet-clinic.git'  // Replace with your Git repository
+            }
+        }
+
         stage('Build') {
             steps {
-                git 'http://github.com/USER/REPO.git'
-                // Run Maven Wrapper Commands
-                echo 'Building the Project with maven compile'
+                sh 'mvn clean package'  // Builds the Spring Boot application
             }
         }
 
         stage('Test') {
             steps {
-                // Run Maven Wrapper Commands
-                echo 'Testing the Project with maven test'
+                sh 'mvn test'  // Runs unit tests
             }
         }
 
-        stage('Package') {
+        stage('Archive Artifact') {
             steps {
-                // Run Maven Wrapper Commands
-                echo 'Packaging the Project with maven package'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
 
-        stage('Containerize') {
+        stage('Run Application') {
             steps {
-                // Docker build command
-                echo 'Containerize the App with docker'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                // Docker run command with detached mode
-                echo 'Deploy the App with Docker'
+                sh 'java -jar target/*.jar'  // Executes the generated JAR file
             }
         }
     }
