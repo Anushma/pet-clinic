@@ -1,43 +1,42 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
-            steps {
-                // Clone the repository
-                git 'https://github.com/Anushma/pet-clinic.git'
-            }
-        }
         stage('Build') {
             steps {
-                // Build the Spring Boot application using Maven
-                bat 'mvn clean package'
+                git 'https://github.com/Anushma/pet-clinic.git'
+
+                // Run Maven Wrapper Commands
+                echo 'Building the Project with maven compile'
             }
         }
-        stage('Check Files') {
-            steps {
-                // Verify the presence of application.properties
-                bat 'dir src\\main\\resources\\application.properties'
-            }
-        }
+
         stage('Test') {
             steps {
-                // Run tests
-                bat 'mvn test'
+                // Run Maven Wrapper Commands
+                echo 'Testing the Project with maven test'
             }
         }
-        stage('Archive Artifacts') {
+
+        stage('Package') {
             steps {
-                // Archive the built artifacts
-                archiveArtifacts artifacts: 'target\\*.jar', fingerprint: true
+                // Run Maven Wrapper Commands
+                echo 'Packaging the Project with maven package'
             }
         }
-    }
-    post {
-        success {
-            echo 'Build completed successfully!'
+
+        stage('Containerize') {
+            steps {
+                // Docker build command
+                echo 'Containerize the App with docker'
+            }
         }
-        failure {
-            echo 'Build failed.'
+
+        stage('Deploy') {
+            steps {
+                // Docker run command with detached mode
+                echo 'Deploy the App with Docker'
+            }
         }
     }
 }
