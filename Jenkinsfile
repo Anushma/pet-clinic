@@ -10,7 +10,13 @@ pipeline {
 
         stage('Build') {
             steps {
+
                 sh 'mvn clean package'  // Builds the Spring Boot application
+
+                // git 'http://github.com/USER/REPO.git'
+                // Run Maven Wrapper Commands
+                echo 'Building the Project with maven compile'
+
             }
         }
 
